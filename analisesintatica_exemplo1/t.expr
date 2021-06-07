@@ -1,5 +1,18 @@
-93
 a = 5
 b = 6
-a + b * 2
-(1+2)*3
+c = a + b * 2
+d = (1+2)*3
+println(c+d)
+if (b > 5) {
+    println(b)
+    println(a+b)
+    x = a+b
+    if (x > 10) {
+        println(1)
+    } else {
+        println(2)
+    }
+
+} else {
+    println(a)
+}

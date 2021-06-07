@@ -1,0 +1,1 @@
+antlr4 -no-listener -visitor LabeledExpr.g4 ; javac Calc.java LabeledExpr*.java ; java Calc t.expr

@@ -5,13 +5,24 @@ import CommonLexerRules;
 prog: stat+;
 
 stat:
-	expr NEWLINE			# printExpr
-	| ID EQ expr NEWLINE	# assign
-	| NEWLINE				# blank;
+	'println' APARE expr FPARE	# println
+	| ID ASSIGN expr NEWLINE	# assign
+	| if_else					# ifElse
+	| NEWLINE					# blank;
 
 expr:
-	expr op = (MUL | DIV) expr		# MulDiv
-	| expr op = (ADD | SUB) expr	# AddSub
-	| INT							# int
-	| ID							# id
-	| APARE expr FPARE				# parens;
+	expr op = (MUL | DIV) expr					# MulDiv
+	| expr op = (ADD | SUB) expr				# AddSub
+	| expr op = (LTEQ | GTEQ | LT | GT) expr	# RelationalExpr
+	| expr op = (EQ | NEQ) expr					# EqualityExpr
+	| expr AND expr								# AndExpr
+	| expr OR expr								# OrExpr
+	| INT										# int
+	| ID										# id
+	| APARE expr FPARE							# parens;
+
+if_else: IF condition (ELSE code_block)?;
+
+condition: expr code_block;
+
+code_block: ACHAV stat* FCHAV | stat;
