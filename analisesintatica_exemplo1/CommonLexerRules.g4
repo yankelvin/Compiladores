@@ -28,3 +28,5 @@ LTEQ: '<=';
 
 IF: 'if';
 ELSE: 'else';
+
+WHILE: 'while';

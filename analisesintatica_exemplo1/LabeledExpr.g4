@@ -8,6 +8,7 @@ stat:
 	'println' APARE expr FPARE	# println
 	| ID ASSIGN expr NEWLINE	# assign
 	| if_else					# ifElse
+	| while						# whileExpr
 	| NEWLINE					# blank;
 
 expr:
@@ -26,3 +27,5 @@ if_else: IF condition (ELSE code_block)?;
 condition: expr code_block;
 
 code_block: ACHAV stat* FCHAV | stat;
+
+while: WHILE expr code_block;

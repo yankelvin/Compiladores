@@ -37,6 +37,13 @@ public interface LabeledExprVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitIfElse(LabeledExprParser.IfElseContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code whileExpr}
+	 * labeled alternative in {@link LabeledExprParser#stat}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitWhileExpr(LabeledExprParser.WhileExprContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code blank}
 	 * labeled alternative in {@link LabeledExprParser#stat}.
 	 * @param ctx the parse tree
@@ -124,4 +131,10 @@ public interface LabeledExprVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitCode_block(LabeledExprParser.Code_blockContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LabeledExprParser#while}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitWhile(LabeledExprParser.WhileContext ctx);
 }

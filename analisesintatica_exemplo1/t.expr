@@ -1,18 +1,6 @@
-a = 5
-b = 6
-c = a + b * 2
-d = (1+2)*3
-println(c+d)
-if (b > 5) {
-    println(b)
-    println(a+b)
-    x = a+b
-    if (x > 10) {
-        println(1)
-    } else {
-        println(2)
-    }
+x = 10
 
-} else {
-    println(a)
+while (x > 5) {
+    println(x)
+    x = x - 1
 }
