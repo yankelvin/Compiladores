@@ -20,11 +20,12 @@ public class LabeledExprParser extends Parser {
 		FCHAV=10, ID=11, INT=12, NEWLINE=13, WS=14, OR=15, AND=16, EQ=17, NEQ=18, 
 		GT=19, LT=20, GTEQ=21, LTEQ=22, IF=23, ELSE=24, WHILE=25;
 	public static final int
-		RULE_prog = 0, RULE_stat = 1, RULE_expr = 2, RULE_if_else = 3, RULE_condition = 4, 
-		RULE_code_block = 5, RULE_while = 6;
+		RULE_prog = 0, RULE_stat = 1, RULE_expr = 2, RULE_if_else_stat = 3, RULE_condition_block = 4, 
+		RULE_code_block = 5, RULE_while_stat = 6;
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"prog", "stat", "expr", "if_else", "condition", "code_block", "while"
+			"prog", "stat", "expr", "if_else_stat", "condition_block", "code_block", 
+			"while_stat"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
@@ -171,34 +172,23 @@ public class LabeledExprParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
+	public static class IfElseStatContext extends StatContext {
+		public If_else_statContext if_else_stat() {
+			return getRuleContext(If_else_statContext.class,0);
+		}
+		public IfElseStatContext(StatContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LabeledExprVisitor ) return ((LabeledExprVisitor<? extends T>)visitor).visitIfElseStat(this);
+			else return visitor.visitChildren(this);
+		}
+	}
 	public static class BlankContext extends StatContext {
 		public TerminalNode NEWLINE() { return getToken(LabeledExprParser.NEWLINE, 0); }
 		public BlankContext(StatContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof LabeledExprVisitor ) return ((LabeledExprVisitor<? extends T>)visitor).visitBlank(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class WhileExprContext extends StatContext {
-		public WhileContext while() {
-			return getRuleContext(WhileContext.class,0);
-		}
-		public WhileExprContext(StatContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LabeledExprVisitor ) return ((LabeledExprVisitor<? extends T>)visitor).visitWhileExpr(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class IfElseContext extends StatContext {
-		public If_elseContext if_else() {
-			return getRuleContext(If_elseContext.class,0);
-		}
-		public IfElseContext(StatContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LabeledExprVisitor ) return ((LabeledExprVisitor<? extends T>)visitor).visitIfElse(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -213,6 +203,17 @@ public class LabeledExprParser extends Parser {
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof LabeledExprVisitor ) return ((LabeledExprVisitor<? extends T>)visitor).visitAssign(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class WhileStatContext extends StatContext {
+		public While_statContext while_stat() {
+			return getRuleContext(While_statContext.class,0);
+		}
+		public WhileStatContext(StatContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LabeledExprVisitor ) return ((LabeledExprVisitor<? extends T>)visitor).visitWhileStat(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -253,19 +254,19 @@ public class LabeledExprParser extends Parser {
 				}
 				break;
 			case IF:
-				_localctx = new IfElseContext(_localctx);
+				_localctx = new IfElseStatContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
 				setState(29);
-				if_else();
+				if_else_stat();
 				}
 				break;
 			case WHILE:
-				_localctx = new WhileExprContext(_localctx);
+				_localctx = new WhileStatContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
 				setState(30);
-				while();
+				while_stat();
 				}
 				break;
 			case NEWLINE:
@@ -628,36 +629,36 @@ public class LabeledExprParser extends Parser {
 		return _localctx;
 	}
 
-	public static class If_elseContext extends ParserRuleContext {
+	public static class If_else_statContext extends ParserRuleContext {
 		public TerminalNode IF() { return getToken(LabeledExprParser.IF, 0); }
-		public ConditionContext condition() {
-			return getRuleContext(ConditionContext.class,0);
+		public Condition_blockContext condition_block() {
+			return getRuleContext(Condition_blockContext.class,0);
 		}
 		public TerminalNode ELSE() { return getToken(LabeledExprParser.ELSE, 0); }
 		public Code_blockContext code_block() {
 			return getRuleContext(Code_blockContext.class,0);
 		}
-		public If_elseContext(ParserRuleContext parent, int invokingState) {
+		public If_else_statContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_if_else; }
+		@Override public int getRuleIndex() { return RULE_if_else_stat; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LabeledExprVisitor ) return ((LabeledExprVisitor<? extends T>)visitor).visitIf_else(this);
+			if ( visitor instanceof LabeledExprVisitor ) return ((LabeledExprVisitor<? extends T>)visitor).visitIf_else_stat(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final If_elseContext if_else() throws RecognitionException {
-		If_elseContext _localctx = new If_elseContext(_ctx, getState());
-		enterRule(_localctx, 6, RULE_if_else);
+	public final If_else_statContext if_else_stat() throws RecognitionException {
+		If_else_statContext _localctx = new If_else_statContext(_ctx, getState());
+		enterRule(_localctx, 6, RULE_if_else_stat);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(66);
 			match(IF);
 			setState(67);
-			condition();
+			condition_block();
 			setState(70);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,5,_ctx) ) {
@@ -683,27 +684,27 @@ public class LabeledExprParser extends Parser {
 		return _localctx;
 	}
 
-	public static class ConditionContext extends ParserRuleContext {
+	public static class Condition_blockContext extends ParserRuleContext {
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
 		}
 		public Code_blockContext code_block() {
 			return getRuleContext(Code_blockContext.class,0);
 		}
-		public ConditionContext(ParserRuleContext parent, int invokingState) {
+		public Condition_blockContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_condition; }
+		@Override public int getRuleIndex() { return RULE_condition_block; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LabeledExprVisitor ) return ((LabeledExprVisitor<? extends T>)visitor).visitCondition(this);
+			if ( visitor instanceof LabeledExprVisitor ) return ((LabeledExprVisitor<? extends T>)visitor).visitCondition_block(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final ConditionContext condition() throws RecognitionException {
-		ConditionContext _localctx = new ConditionContext(_ctx, getState());
-		enterRule(_localctx, 8, RULE_condition);
+	public final Condition_blockContext condition_block() throws RecognitionException {
+		Condition_blockContext _localctx = new Condition_blockContext(_ctx, getState());
+		enterRule(_localctx, 8, RULE_condition_block);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
@@ -801,7 +802,7 @@ public class LabeledExprParser extends Parser {
 		return _localctx;
 	}
 
-	public static class WhileContext extends ParserRuleContext {
+	public static class While_statContext extends ParserRuleContext {
 		public TerminalNode WHILE() { return getToken(LabeledExprParser.WHILE, 0); }
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
@@ -809,20 +810,20 @@ public class LabeledExprParser extends Parser {
 		public Code_blockContext code_block() {
 			return getRuleContext(Code_blockContext.class,0);
 		}
-		public WhileContext(ParserRuleContext parent, int invokingState) {
+		public While_statContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_while; }
+		@Override public int getRuleIndex() { return RULE_while_stat; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LabeledExprVisitor ) return ((LabeledExprVisitor<? extends T>)visitor).visitWhile(this);
+			if ( visitor instanceof LabeledExprVisitor ) return ((LabeledExprVisitor<? extends T>)visitor).visitWhile_stat(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final WhileContext while() throws RecognitionException {
-		WhileContext _localctx = new WhileContext(_ctx, getState());
-		enterRule(_localctx, 12, RULE_while);
+	public final While_statContext while_stat() throws RecognitionException {
+		While_statContext _localctx = new While_statContext(_ctx, getState());
+		enterRule(_localctx, 12, RULE_while_stat);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{

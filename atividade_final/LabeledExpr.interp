@@ -58,10 +58,10 @@ rule names:
 prog
 stat
 expr
-if_else
-condition
+if_else_stat
+condition_block
 code_block
-while
+while_stat
 
 
 atn:

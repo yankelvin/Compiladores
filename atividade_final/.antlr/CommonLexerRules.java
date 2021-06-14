@@ -1,4 +1,4 @@
-// Generated from d:\Code\Faculdade\Compiladores\analisesintatica_exemplo1\CommonLexerRules.g4 by ANTLR 4.8
+// Generated from d:\Code\Faculdade\Compiladores\atividade_final\CommonLexerRules.g4 by ANTLR 4.8
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;

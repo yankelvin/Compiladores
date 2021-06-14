@@ -77,8 +77,8 @@ public class EvalVisitor extends LabeledExprBaseVisitor<Integer> {
     
     // if override
     @Override
-    public Integer visitIfElse(LabeledExprParser.IfElseContext ctx) {
-        LabeledExprParser.ConditionContext condition = ctx.condition();
+    public Integer visitIf_else_stat(LabeledExprParser.If_else_statContext ctx) {
+        LabeledExprParser.Condition_blockContext condition = ctx.condition_block();
 
         boolean evaluatedBlock = false;
 
@@ -97,7 +97,7 @@ public class EvalVisitor extends LabeledExprBaseVisitor<Integer> {
     }
     
     @Override
-    public Integer visitWhileExpr(LabeledExprParser.WhileExprContext ctx) {
+    public Integer visitWhile_stat(LabeledExprParser.While_statContext ctx) {
         int value = this.visit(ctx.expr());
 
         while(value == 1) {

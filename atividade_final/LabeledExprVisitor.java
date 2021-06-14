@@ -30,19 +30,19 @@ public interface LabeledExprVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAssign(LabeledExprParser.AssignContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code ifElse}
+	 * Visit a parse tree produced by the {@code ifElseStat}
 	 * labeled alternative in {@link LabeledExprParser#stat}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitIfElse(LabeledExprParser.IfElseContext ctx);
+	T visitIfElseStat(LabeledExprParser.IfElseStatContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code whileExpr}
+	 * Visit a parse tree produced by the {@code whileStat}
 	 * labeled alternative in {@link LabeledExprParser#stat}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitWhileExpr(LabeledExprParser.WhileExprContext ctx);
+	T visitWhileStat(LabeledExprParser.WhileStatContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code blank}
 	 * labeled alternative in {@link LabeledExprParser#stat}.
@@ -114,17 +114,17 @@ public interface LabeledExprVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitOrExpr(LabeledExprParser.OrExprContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LabeledExprParser#if_else}.
+	 * Visit a parse tree produced by {@link LabeledExprParser#if_else_stat}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitIf_else(LabeledExprParser.If_elseContext ctx);
+	T visitIf_else_stat(LabeledExprParser.If_else_statContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LabeledExprParser#condition}.
+	 * Visit a parse tree produced by {@link LabeledExprParser#condition_block}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCondition(LabeledExprParser.ConditionContext ctx);
+	T visitCondition_block(LabeledExprParser.Condition_blockContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link LabeledExprParser#code_block}.
 	 * @param ctx the parse tree
@@ -132,9 +132,9 @@ public interface LabeledExprVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCode_block(LabeledExprParser.Code_blockContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LabeledExprParser#while}.
+	 * Visit a parse tree produced by {@link LabeledExprParser#while_stat}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitWhile(LabeledExprParser.WhileContext ctx);
+	T visitWhile_stat(LabeledExprParser.While_statContext ctx);
 }
