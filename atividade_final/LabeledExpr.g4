@@ -7,9 +7,10 @@ prog: stat+;
 stat:
 	'println' APARE expr FPARE	# println
 	| ID ASSIGN expr NEWLINE	# assign
-	| if_else_stat				# ifElseStat
-	| while_stat				# whileStat
-	| NEWLINE					# blank;
+	| if_else_stat				# none
+	| while_stat				# none
+	| NEWLINE					# blank
+	| '/*' prog '*/'			# comentary;
 
 expr:
 	expr op = (MUL | DIV) expr					# MulDiv
@@ -24,8 +25,8 @@ expr:
 
 if_else_stat: IF condition_block (ELSE code_block)?;
 
+while_stat: WHILE expr code_block;
+
 condition_block: expr code_block;
 
 code_block: ACHAV stat* FCHAV | stat;
-
-while_stat: WHILE expr code_block;

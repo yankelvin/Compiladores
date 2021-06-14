@@ -27,6 +27,12 @@ public class EvalVisitor extends LabeledExprBaseVisitor<Integer> {
         
         return 0; 
     }
+    
+    // Comentário
+    @Override
+    public Integer visitComentary(LabeledExprParser.ComentaryContext ctx) {
+        return 0;
+    }
 
     /** INT */
     @Override
@@ -98,11 +104,11 @@ public class EvalVisitor extends LabeledExprBaseVisitor<Integer> {
     
     @Override
     public Integer visitWhile_stat(LabeledExprParser.While_statContext ctx) {
-        int value = this.visit(ctx.expr());
+        int condition = this.visit(ctx.expr());
 
-        while(value == 1) {
+        while(condition == 1) {
             this.visit(ctx.code_block());
-            value = this.visit(ctx.expr());
+            condition = this.visit(ctx.expr());
         }
 
         return 0;

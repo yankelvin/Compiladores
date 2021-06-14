@@ -30,19 +30,12 @@ public interface LabeledExprVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAssign(LabeledExprParser.AssignContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code ifElseStat}
+	 * Visit a parse tree produced by the {@code none}
 	 * labeled alternative in {@link LabeledExprParser#stat}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitIfElseStat(LabeledExprParser.IfElseStatContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code whileStat}
-	 * labeled alternative in {@link LabeledExprParser#stat}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitWhileStat(LabeledExprParser.WhileStatContext ctx);
+	T visitNone(LabeledExprParser.NoneContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code blank}
 	 * labeled alternative in {@link LabeledExprParser#stat}.
@@ -50,6 +43,13 @@ public interface LabeledExprVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitBlank(LabeledExprParser.BlankContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code comentary}
+	 * labeled alternative in {@link LabeledExprParser#stat}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitComentary(LabeledExprParser.ComentaryContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code AndExpr}
 	 * labeled alternative in {@link LabeledExprParser#expr}.
@@ -120,6 +120,12 @@ public interface LabeledExprVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitIf_else_stat(LabeledExprParser.If_else_statContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link LabeledExprParser#while_stat}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitWhile_stat(LabeledExprParser.While_statContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link LabeledExprParser#condition_block}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -131,10 +137,4 @@ public interface LabeledExprVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitCode_block(LabeledExprParser.Code_blockContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link LabeledExprParser#while_stat}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitWhile_stat(LabeledExprParser.While_statContext ctx);
 }

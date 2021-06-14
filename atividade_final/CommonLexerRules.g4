@@ -9,10 +9,10 @@ APARE: '(';
 FPARE: ')';
 ACHAV: '{';
 FCHAV: '}';
+PTVIG: ';';
 
-ID: [a-zA-Z]+;
-INT: [0-9]+;
 NEWLINE: '\r'? '\n';
+COMMENT: '//' ~[\r\n]* -> skip;
 WS: [ \t]+ -> skip;
 
 OR: '||';
@@ -24,9 +24,15 @@ LT: '<';
 GTEQ: '>=';
 LTEQ: '<=';
 
-// PRINTLN: 'println' '\r'? '\n'*;
-
 IF: 'if';
 ELSE: 'else';
-
 WHILE: 'while';
+
+TYPE_INT: 'int';
+TYPE_FLOAT: 'float';
+TYPE_STRING: 'string';
+
+ID: [a-zA-Z]+;
+INT: [0-9]+;
+FLOAT: [0-9]+ '.' [0-9]* | '.' [0-9]+;
+STRING: '"' (~["\r\n] | '""')* '"';
