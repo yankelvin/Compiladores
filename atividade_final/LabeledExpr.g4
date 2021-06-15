@@ -9,6 +9,7 @@ stat:
 	| ID ASSIGN expr NEWLINE	# assign
 	| if_else_stat				# none
 	| while_stat				# none
+	| for_stat                  # none
 	| NEWLINE					# blank
 	| '/*' prog '*/'			# comentary;
 
@@ -24,6 +25,8 @@ expr:
 	| APARE expr FPARE							# parens;
 
 if_else_stat: IF condition_block (ELSE code_block)?;
+
+for_stat: FOR APARE ID ASSIGN expr ';' expr op = (LTEQ | GTEQ | LT | GT) expr FPARE code_block;
 
 while_stat: WHILE expr code_block;
 

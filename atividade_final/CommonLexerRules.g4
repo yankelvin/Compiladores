@@ -27,6 +27,7 @@ LTEQ: '<=';
 IF: 'if';
 ELSE: 'else';
 WHILE: 'while';
+FOR: 'for';
 
 TYPE_INT: 'int';
 TYPE_FLOAT: 'float';

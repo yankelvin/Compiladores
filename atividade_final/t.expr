@@ -4,3 +4,6 @@ while(x < 10) {
     println(x)
     x = x  + 1
 }
+for(y=0; y<10){
+    println(y)
+}

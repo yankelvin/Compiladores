@@ -2,6 +2,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.naming.OperationNotSupportedException;
+
 public class EvalVisitor extends LabeledExprBaseVisitor<Integer> {
     Map<String, Integer> memory = new HashMap<String, Integer>();
 
@@ -111,6 +113,51 @@ public class EvalVisitor extends LabeledExprBaseVisitor<Integer> {
             condition = this.visit(ctx.expr());
         }
 
+        return 0;
+    }
+    private void assingFor(String id, int value){
+        memory.put(id, value);
+    }
+    @Override
+    public Integer visitFor_stat(LabeledExprParser.For_statContext ctx){
+        int left = this.visit(ctx.expr(1));
+        int right = this.visit(ctx.expr(2));
+        String operator = ctx.op.getText();
+        String id = ctx.ID().getText();
+        assingFor(id, visit(ctx.expr(0)));
+
+        switch (ctx.op.getType()) {
+            case LabeledExprParser.LT:
+                for (int x = left; x < right; x++)
+                {
+                    visit(ctx.code_block());
+                    assingFor(id, x);
+                }
+                break;
+            case LabeledExprParser.LTEQ:
+                for (int x = left; x <= right; x++)
+                {
+                    visit(ctx.code_block());
+                    assingFor(id, x);
+                }
+                break;
+            case LabeledExprParser.GT:
+                for (int x = left; x > right; x++)
+                {
+                    visit(ctx.code_block());
+                    assingFor(id, x);
+                }
+                break;
+            case LabeledExprParser.GTEQ:
+                for (int x = left; x >= right; x++)
+                {
+                    visit(ctx.code_block());
+                    assingFor(id, x);
+                }
+                break;
+            default:
+                return 0;
+        }
         return 0;
     }
     

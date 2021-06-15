@@ -1,4 +1,4 @@
-// Generated from LabeledExpr.g4 by ANTLR 4.9.1
+// Generated from LabeledExpr.g4 by ANTLR 4.9
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -119,6 +119,12 @@ public interface LabeledExprVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitIf_else_stat(LabeledExprParser.If_else_statContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LabeledExprParser#for_stat}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFor_stat(LabeledExprParser.For_statContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link LabeledExprParser#while_stat}.
 	 * @param ctx the parse tree
