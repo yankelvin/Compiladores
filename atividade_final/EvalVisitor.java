@@ -120,43 +120,15 @@ public class EvalVisitor extends LabeledExprBaseVisitor<Integer> {
     }
     @Override
     public Integer visitFor_stat(LabeledExprParser.For_statContext ctx){
-        int left = this.visit(ctx.expr(1));
-        int right = this.visit(ctx.expr(2));
-        String operator = ctx.op.getText();
         String id = ctx.ID().getText();
         assingFor(id, visit(ctx.expr(0)));
+        int condition = this.visit(ctx.expr(1));
 
-        switch (ctx.op.getType()) {
-            case LabeledExprParser.LT:
-                for (int x = left; x < right; x++)
-                {
-                    visit(ctx.code_block());
-                    assingFor(id, x);
-                }
-                break;
-            case LabeledExprParser.LTEQ:
-                for (int x = left; x <= right; x++)
-                {
-                    visit(ctx.code_block());
-                    assingFor(id, x);
-                }
-                break;
-            case LabeledExprParser.GT:
-                for (int x = left; x > right; x++)
-                {
-                    visit(ctx.code_block());
-                    assingFor(id, x);
-                }
-                break;
-            case LabeledExprParser.GTEQ:
-                for (int x = left; x >= right; x++)
-                {
-                    visit(ctx.code_block());
-                    assingFor(id, x);
-                }
-                break;
-            default:
-                return 0;
+        for (int x = memory.get(id); condition == 1; x++)
+        {
+            visit(ctx.code_block());
+            memory.put(id, x);
+            condition = this.visit(ctx.expr(1));
         }
         return 0;
     }

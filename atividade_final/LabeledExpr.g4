@@ -26,7 +26,7 @@ expr:
 
 if_else_stat: IF condition_block (ELSE code_block)?;
 
-for_stat: FOR APARE ID ASSIGN expr ';' expr op = (LTEQ | GTEQ | LT | GT) expr FPARE code_block;
+for_stat: FOR APARE ID ASSIGN expr ';' expr FPARE code_block;
 
 while_stat: WHILE expr code_block;
 
