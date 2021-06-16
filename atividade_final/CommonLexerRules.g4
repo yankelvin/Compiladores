@@ -9,6 +9,8 @@ APARE: '(';
 FPARE: ')';
 ACHAV: '{';
 FCHAV: '}';
+ACOL: '[';
+FCOL: ']';
 PTVIG: ';';
 
 NEWLINE: '\r'? '\n';
@@ -30,9 +32,7 @@ WHILE: 'while';
 FOR: 'for';
 CONST: 'const';
 
-TYPE_INT: 'int';
-TYPE_FLOAT: 'float';
-TYPE_STRING: 'string';
+ARRAY: 'array';
 
 ID: [a-zA-Z]+;
 INT: [0-9]+;

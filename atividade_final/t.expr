@@ -1,13 +1,5 @@
-x = 5
+array teste[10]
+teste[4] = 2
 
-while(x < 10) {
-    println(x)
-    x = x  + 1
-}
-for(y=0; y<=10){
-    println(y)
-}
-
-const j = 0
-
-j = 10
+println(teste[4] * 5)
+println(55555)

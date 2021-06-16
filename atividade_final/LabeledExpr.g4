@@ -5,15 +5,19 @@ import CommonLexerRules;
 prog: stat+;
 
 stat:
-	'println' APARE expr FPARE	# println
-	| ID ASSIGN expr NEWLINE	# assign
-	| if_else_stat				# none
-	| while_stat				# none
-	| for_stat                  # none
-	| const_stat                # none
-	| NEWLINE					# blank
-	| '/*' prog '*/'			# comentary;
+	'println' APARE expr FPARE				# println
+	| ID ASSIGN expr NEWLINE				# assign
+	| if_else_stat							# none
+	| while_stat							# none
+	| for_stat                  			# none
+	| NEWLINE								# blank
+	| const_stat                			# none
+	| ARRAY ID ACOL length FCOL				# array_declaration
+	| ID ACOL position FCOL ASSIGN INT		# array_assign
+	| '/*' prog '*/'						# comentary;
 
+length: INT;
+position: INT;
 
 expr:
 	expr op = (MUL | DIV) expr					# MulDiv
@@ -22,6 +26,7 @@ expr:
 	| expr op = (EQ | NEQ) expr					# EqualityExpr
 	| expr AND expr								# AndExpr
 	| expr OR expr								# OrExpr
+	| ID ACOL position FCOL						# array_access
 	| INT										# int
 	| ID										# id
 	| APARE expr FPARE							# parens;

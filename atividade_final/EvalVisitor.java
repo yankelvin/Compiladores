@@ -7,6 +7,7 @@ import javax.naming.OperationNotSupportedException;
 public class EvalVisitor extends LabeledExprBaseVisitor<Integer> {
     Map<String, Integer> memory = new HashMap<String, Integer>();
     Map<String, Boolean> memoryConst = new HashMap<String, Boolean>();
+    Map<String, int[]> list_memory = new HashMap<String, int[]>();
 
     /** ID '=' expr NEWLINE */
     @Override
@@ -56,7 +57,8 @@ public class EvalVisitor extends LabeledExprBaseVisitor<Integer> {
     public Integer visitId(LabeledExprParser.IdContext ctx) {
         String id = ctx.ID().getText();
 
-        if(memory.containsKey(id)) return memory.get(id);
+        if(memory.containsKey(id)) 
+            return memory.get(id);
 
         return 0;
     }
@@ -65,13 +67,23 @@ public class EvalVisitor extends LabeledExprBaseVisitor<Integer> {
     /** expr op=('*'|'/') expr */
     @Override
     public Integer visitMulDiv(LabeledExprParser.MulDivContext ctx) {
-        int left = visit(ctx.expr(0));
+        try {
+            int left = visit(ctx.expr(0));
+            int right = visit(ctx.expr(1));
 
-        int right = visit(ctx.expr(1));
+            if(ctx.op.getType() == LabeledExprParser.MUL) 
+                return left * right;
+                
+            if (right == 0) {
+                throw new Exception("Erro de compilação: Não é possível realizar divisão por zero.");
+            }
 
-        if(ctx.op.getType() == LabeledExprParser.MUL) return left * right;
-
-        return left / right;
+            return left / right;
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+        }
+        
+        return 0;
     }
 
     /** expr op=('+' | '-') */
@@ -124,9 +136,11 @@ public class EvalVisitor extends LabeledExprBaseVisitor<Integer> {
 
         return 0;
     }
+    
     private void assingFor(String id, int value){
         memory.put(id, value);
     }
+    
     @Override
     public Integer visitFor_stat(LabeledExprParser.For_statContext ctx){
         String id = ctx.ID().getText();
@@ -139,6 +153,7 @@ public class EvalVisitor extends LabeledExprBaseVisitor<Integer> {
             memory.put(id, x);
             condition = this.visit(ctx.expr(1));
         }
+        
         return 0;
     }
     
@@ -160,46 +175,58 @@ public class EvalVisitor extends LabeledExprBaseVisitor<Integer> {
     
     @Override
     public Integer visitEqualityExpr(LabeledExprParser.EqualityExprContext ctx) {
+        try {
+            int left = this.visit(ctx.expr(0));
+            int right = this.visit(ctx.expr(1));
 
-        int left = this.visit(ctx.expr(0));
-        int right = this.visit(ctx.expr(1));
-
-        switch (ctx.op.getType()) {
-            case LabeledExprParser.EQ:
-                return left == right ? 1 : 0;
-            case LabeledExprParser.NEQ:
-                return left != right ? 1 : 0;
-            default:
-                return 0;
+            switch (ctx.op.getType()) {
+                case LabeledExprParser.EQ:
+                    return left == right ? 1 : 0;
+                case LabeledExprParser.NEQ:
+                    return left != right ? 1 : 0;
+                default:
+                    throw new Exception("Erro de compilação: Operador inválido.");
+            }
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
         }
+        
+        return 0;
     }
     
     @Override
     public Integer visitRelationalExpr(LabeledExprParser.RelationalExprContext ctx) {
-        int left = this.visit(ctx.expr(0));
-        int right = this.visit(ctx.expr(1));
+        try {
+            int left = this.visit(ctx.expr(0));
+            int right = this.visit(ctx.expr(1));
 
-        switch (ctx.op.getType()) {
-            case LabeledExprParser.LT:
-                return left < right ? 1 : 0;
-            case LabeledExprParser.LTEQ:
-                return left <= right ? 1 : 0;
-            case LabeledExprParser.GT:
-                return left > right ? 1 : 0;
-            case LabeledExprParser.GTEQ:
-                return left >= right ? 1 : 0;
-            default:
-                return 0;
+            switch (ctx.op.getType()) {
+                case LabeledExprParser.LT:
+                    return left < right ? 1 : 0;
+                case LabeledExprParser.LTEQ:
+                    return left <= right ? 1 : 0;
+                case LabeledExprParser.GT:
+                    return left > right ? 1 : 0;
+                case LabeledExprParser.GTEQ:
+                    return left >= right ? 1 : 0;
+                default:
+                    throw new Exception("Erro de compilação: Operador inválido.");
+            }
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
         }
+        
+        return 0;
     }
+    
     @Override
-    public Integer visitConst_stat(LabeledExprParser.Const_statContext ctx){
-        try{
+    public Integer visitConst_stat(LabeledExprParser.Const_statContext ctx) {
+        try {
             String id = ctx.ID().getText();
+            
             if (memoryConst.containsKey(id)){
                 throw new Exception("Erro de compilação: constante " + id + "já declarada.");
-            }
-            else {
+            } else {
                 int value = this.visit(ctx.expr());
 
                 memory.put(id, value);
@@ -207,10 +234,75 @@ public class EvalVisitor extends LabeledExprBaseVisitor<Integer> {
         
                 return value;
             }
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             System.err.println(ex.getMessage());
         }
+        
+        return 0;
+    }
+    
+    @Override 
+    public Integer visitLength(LabeledExprParser.LengthContext ctx) {
+        return Integer.valueOf(ctx.INT().getText());
+    }
+    
+    @Override 
+    public Integer visitPosition(LabeledExprParser.PositionContext ctx) { 
+        return Integer.valueOf(ctx.INT().getText());
+    }
+    
+    @Override
+    public Integer visitArray_declaration(LabeledExprParser.Array_declarationContext ctx) { 
+        try {
+            String id = ctx.ID().getText();
+            
+            if (list_memory.containsKey(id)) {
+                throw new Exception("Erro de compilação. Variável já declarada.");
+            }
+            
+            int length =this.visit(ctx.length());
+            list_memory.put(id, new int[length]);
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+        }
+        
+        return 0;
+    }
+    
+    @Override 
+    public Integer visitArray_assign(LabeledExprParser.Array_assignContext ctx) {
+        try {
+            String id = ctx.ID().getText();
+            Integer position = visit(ctx.position());
+            Integer value = Integer.valueOf(ctx.INT().getText());
+            
+            if (!list_memory.containsKey(id)) {
+                throw new Exception("Erro de compilação. Variável não existe.");
+            }
+            
+            list_memory.get(id)[position] = value;
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+        }
+        
+        return 0;
+    }
+    
+    @Override 
+    public Integer visitArray_access(LabeledExprParser.Array_accessContext ctx) { 
+        try {
+            String id = ctx.ID().getText();
+            Integer position = visit(ctx.position());
+            
+            if (!list_memory.containsKey(id)) {
+                throw new Exception("Erro de compilação. Variável não existe.");
+            }
+            
+            return list_memory.get(id)[position];
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+        }
+        
         return 0;
     }
 }
