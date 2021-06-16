@@ -114,6 +114,12 @@ public interface LabeledExprVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitOrExpr(LabeledExprParser.OrExprContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link LabeledExprParser#const_stat}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitConst_stat(LabeledExprParser.Const_statContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link LabeledExprParser#if_else_stat}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

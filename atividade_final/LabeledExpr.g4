@@ -10,8 +10,10 @@ stat:
 	| if_else_stat				# none
 	| while_stat				# none
 	| for_stat                  # none
+	| const_stat                # none
 	| NEWLINE					# blank
 	| '/*' prog '*/'			# comentary;
+
 
 expr:
 	expr op = (MUL | DIV) expr					# MulDiv
@@ -23,6 +25,8 @@ expr:
 	| INT										# int
 	| ID										# id
 	| APARE expr FPARE							# parens;
+
+const_stat: CONST ID ASSIGN expr NEWLINE;
 
 if_else_stat: IF condition_block (ELSE code_block)?;
 

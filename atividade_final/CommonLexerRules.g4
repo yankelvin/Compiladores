@@ -28,6 +28,7 @@ IF: 'if';
 ELSE: 'else';
 WHILE: 'while';
 FOR: 'for';
+CONST: 'const';
 
 TYPE_INT: 'int';
 TYPE_FLOAT: 'float';

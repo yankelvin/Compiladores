@@ -6,18 +6,27 @@ import javax.naming.OperationNotSupportedException;
 
 public class EvalVisitor extends LabeledExprBaseVisitor<Integer> {
     Map<String, Integer> memory = new HashMap<String, Integer>();
+    Map<String, Boolean> memoryConst = new HashMap<String, Boolean>();
 
     /** ID '=' expr NEWLINE */
     @Override
     public Integer visitAssign(LabeledExprParser.AssignContext ctx) {
-        String id = ctx.ID().getText();
+        try{
+            String id = ctx.ID().getText();
 
-        int value = visit(ctx.expr());
-
-        memory.put(id, value);
-
-        return value;
-
+            if (memoryConst.containsKey(id))
+                throw new Exception("Erro de compilação: Valor da constante não pode ser alterado.");
+    
+            int value = visit(ctx.expr());
+    
+            memory.put(id, value);
+    
+            return value;
+        }
+        catch(Exception ex){
+            System.err.println(ex.getMessage());
+        }
+        return 0;
     }
     
     /** PRINTLN */
@@ -182,5 +191,26 @@ public class EvalVisitor extends LabeledExprBaseVisitor<Integer> {
             default:
                 return 0;
         }
+    }
+    @Override
+    public Integer visitConst_stat(LabeledExprParser.Const_statContext ctx){
+        try{
+            String id = ctx.ID().getText();
+            if (memoryConst.containsKey(id)){
+                throw new Exception("Erro de compilação: constante " + id + "já declarada.");
+            }
+            else {
+                int value = this.visit(ctx.expr());
+
+                memory.put(id, value);
+                memoryConst.put(id, true);
+        
+                return value;
+            }
+        }
+        catch (Exception ex){
+            System.err.println(ex.getMessage());
+        }
+        return 0;
     }
 }
