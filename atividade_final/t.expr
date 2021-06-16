@@ -1,5 +1,2 @@
-array teste[10]
-teste[4] = 2
-
-println(teste[4] * 5)
-println(55555)
+println("teste" + 5 + 1)
+println(5 + 4 + "test")

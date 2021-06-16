@@ -27,6 +27,8 @@ expr:
 	| expr AND expr								# AndExpr
 	| expr OR expr								# OrExpr
 	| ID ACOL position FCOL						# array_access
+	| STRING '+' expr							# concatStringFirst
+	| expr '+' STRING							# concatExprFirst
 	| INT										# int
 	| ID										# id
 	| APARE expr FPARE							# parens;

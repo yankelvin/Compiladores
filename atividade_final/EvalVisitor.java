@@ -35,7 +35,8 @@ public class EvalVisitor extends LabeledExprBaseVisitor<Integer> {
     public Integer visitPrintln(LabeledExprParser.PrintlnContext ctx) { 
         Integer value = visit(ctx.expr());
         
-        System.out.println(value);
+        if (value != Integer.MIN_VALUE)
+            System.out.println(value);
         
         return 0; 
     }
@@ -304,5 +305,27 @@ public class EvalVisitor extends LabeledExprBaseVisitor<Integer> {
         }
         
         return 0;
+    }
+    
+    @Override 
+    public Integer visitConcatStringFirst(LabeledExprParser.ConcatStringFirstContext ctx) { 
+        String text = ctx.STRING().getText().replace("\"", "");
+        Integer expr = visit(ctx.expr());
+        
+        System.out.println(text + expr);
+        
+        // POG DEVIDO A NÃO FAZERMOS A TIPAGEM =/ SAD BUT TRUE
+        return Integer.MIN_VALUE;
+    }
+    
+    @Override 
+    public Integer visitConcatExprFirst(LabeledExprParser.ConcatExprFirstContext ctx) { 
+        String text = ctx.STRING().getText().replace("\"", "");
+        Integer expr = visit(ctx.expr());
+        
+        System.out.println(expr + text);
+        
+        // POG DEVIDO A NÃO FAZERMOS A TIPAGEM =/ SAD BUT TRUE
+        return Integer.MIN_VALUE;
     }
 }

@@ -34,7 +34,8 @@ CONST: 'const';
 
 ARRAY: 'array';
 
+STRING: '"' (~["\r\n] | '""')* '"';
+
 ID: [a-zA-Z]+;
 INT: [0-9]+;
 FLOAT: [0-9]+ '.' [0-9]* | '.' [0-9]+;
-STRING: '"' (~["\r\n] | '""')* '"';

@@ -98,6 +98,13 @@ public interface LabeledExprVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitEqualityExpr(LabeledExprParser.EqualityExprContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code concatStringFirst}
+	 * labeled alternative in {@link LabeledExprParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitConcatStringFirst(LabeledExprParser.ConcatStringFirstContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code array_access}
 	 * labeled alternative in {@link LabeledExprParser#expr}.
 	 * @param ctx the parse tree
@@ -118,6 +125,13 @@ public interface LabeledExprVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitAddSub(LabeledExprParser.AddSubContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code concatExprFirst}
+	 * labeled alternative in {@link LabeledExprParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitConcatExprFirst(LabeledExprParser.ConcatExprFirstContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code id}
 	 * labeled alternative in {@link LabeledExprParser#expr}.
